@@ -1,6 +1,7 @@
 {
   "name": "wxbot",
   "version": "0.0.8",
+  "author": "nil",
   "description": "普通个人号 微信机器人/外挂",
   "repository": "git@github.com:fritx/wxbot.git",
   "homepage": "https://github.com/fritx/wxbot",
@@ -10,15 +11,29 @@
     "qq",
     "bot"
   ],
+  "build": {
+    "appId": "your.id",
+    "mac": {
+      "category": "your.app.category.type"
+    },
+    "win": {
+      "iconUrl": ""
+    }
+  },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "build --dir",
+    "dist": "build"
   },
   "dependencies": {
     "bytes": "^2.4.0",
-    "electron": "^1.4.15",
     "fs-extra": "^0.24.0",
     "lodash": "^3.10.1",
     "moment": "^2.17.1",
     "node-schedule": "^1.2.0"
+  },
+  "devDependencies": {
+    "electron": "^1.4.15",
+    "electron-builder": "^13.5.0"
   }
 }
