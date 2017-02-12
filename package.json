@@ -14,7 +14,8 @@
     "start": "electron ."
   },
   "dependencies": {
-    "bytes": "^2.1.0",
+    "bytes": "^2.4.0",
+    "electron": "^1.4.15",
     "fs-extra": "^0.24.0",
     "lodash": "^3.10.1"
   }
