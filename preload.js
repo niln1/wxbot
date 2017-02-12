@@ -42,16 +42,6 @@ function init(){
 	}, 500)
 }
 
-// function onLogin(){
-// 	// ipc.sendToHost('login')
-// 	$('img[src*=filehelper]').closest('.chat_item')[0].click()
-// 	try {
-// 		sendMessage('新年好', '倪伟更（虹1088）虹在波浪')
-// 	} catch (err) { // 错误解锁
-// 		reset()
-// 	}
-// }
-
 function scheduleMessageSend() {
 	setInterval(function () {
 	    var date = new Date();
@@ -83,19 +73,19 @@ function onLogin(){
 	// ipc.sendToHost('login')
 	$('img[src*=filehelper]').closest('.chat_item')[0].click()
 	scheduleMessageSend()
-	window.checkForReddot = function checkForReddot (){
-		// window.isFocus = true
-		var $reddot = $('.web_wechat_reddot, .web_wechat_reddot_middle').last()
-		if ($reddot.length) {
-			var $chat_item = $reddot.closest('.chat_item')
-			try {
-				onReddot($chat_item)
-			} catch (err) { // 错误解锁
-				reset()
-			}
-		}
-	}
-	var cr = setInterval(checkForReddot, 1000)
+	// window.checkForReddot = function checkForReddot (){
+	// 	// window.isFocus = true
+	// 	var $reddot = $('.web_wechat_reddot, .web_wechat_reddot_middle').last()
+	// 	if ($reddot.length) {
+	// 		var $chat_item = $reddot.closest('.chat_item')
+	// 		try {
+	// 			onReddot($chat_item)
+	// 		} catch (err) { // 错误解锁
+	// 			reset()
+	// 		}
+	// 	}
+	// }
+	// var cr = setInterval(checkForReddot, 1000)
 }
 
 function onReddot($chat_item){
