@@ -2,6 +2,7 @@
 var clipboard = require('electron').clipboard
 var nativeImage = require('electron').nativeImage
 var _ = require('lodash')
+var moment = require('moment')
 
 // 应对 微信网页偷换了console 使起失效
 // 保住console引用 便于使用
@@ -41,10 +42,48 @@ function init(){
 	}, 500)
 }
 
+// function onLogin(){
+// 	// ipc.sendToHost('login')
+// 	$('img[src*=filehelper]').closest('.chat_item')[0].click()
+// 	try {
+// 		sendMessage('新年好', '倪伟更（虹1088）虹在波浪')
+// 	} catch (err) { // 错误解锁
+// 		reset()
+// 	}
+// }
+
+function scheduleMessageSend() {
+	setInterval(function () {
+	    var date = new Date();
+	    if (date.getDay() !== 5 && date.getDay() !== 6 && date.getHours() === 15 && date.getMinutes() === 0) {
+					sendMessage('1. 今天趋势是什么？  2. 今天白天怎么看盘？', '倪伟更（虹1088）虹在波浪')
+	    }
+			if (date.getDay() !== 5 && date.getDay() !== 6 && date.getHours() === 3 && date.getMinutes() === 0) {
+					sendMessage('1. 今天趋势是什么？  2. 今天夜盘怎么看盘？', '倪伟更（虹1088）虹在波浪')
+			}
+			if (date.getDay() === 6 && date.getHours() === 20 && date.getMinutes() === 20) {
+					sendMessage('这周的趋势是什么 和上周一样么？', '倪伟更（虹1088）虹在波浪')
+			}
+	}, 60000)
+}
+
+window.scheduleMessageSend = scheduleMessageSend
+
+function sendMessage(message, to) {
+	$('.nickname_text').filter(function(i, each) {
+		return each.innerHTML==to
+	}).closest('.chat_item')[0].click()
+
+	paste({ text: message })
+	$('.btn_send')[0].click()
+	reset()
+}
+
 function onLogin(){
 	// ipc.sendToHost('login')
 	$('img[src*=filehelper]').closest('.chat_item')[0].click()
-	var checkForReddot = setInterval(function(){
+	scheduleMessageSend()
+	window.checkForReddot = function checkForReddot (){
 		// window.isFocus = true
 		var $reddot = $('.web_wechat_reddot, .web_wechat_reddot_middle').last()
 		if ($reddot.length) {
@@ -55,7 +94,8 @@ function onLogin(){
 				reset()
 			}
 		}
-	}, 100)
+	}
+	var cr = setInterval(checkForReddot, 1000)
 }
 
 function onReddot($chat_item){
@@ -80,6 +120,7 @@ function onReddot($chat_item){
 	if ($nickname.length) { // 群聊
 		var from = $nickname.text()
 		var room = $titlename.text()
+		$titlename.closest('.chat_item')[0].click()
 	} else { // 单聊
 		var from = $titlename.text()
 		var room = null
@@ -181,7 +222,9 @@ function onReddot($chat_item){
 			}
 		})
 		if (text === '[收到了一个表情，请在手机上查看]' ||
-				text === '[Received a sticker. View on phone]') { // 微信表情包
+				text === '[Received a sticker. view on phone]' ||
+				text === '[Send an emoji, view it on mobile]'
+			) { // 微信表情包
 			text = '发毛表情'
 		} else if (text === '[收到一条微信转账消息，请在手机上查看]' ||
 				text === '[Received transfer. View on phone.]') {
@@ -237,9 +280,6 @@ function onReddot($chat_item){
 		$('.btn_send')[0].click()
 		reset()
 	}
-
-
-
 	}, 100)
 }
 
@@ -275,3 +315,12 @@ function paste(opt){
 	clipboard.writeText(oldText)
 }
 
+function send() {
+	$('.btn_send')[0].click()
+}
+
+window.sendMessage = sendMessage;
+window.paste = paste;
+window.send = send;
+window.reset = reset;
+window.onReddot = onReddot;
